@@ -1,6 +1,7 @@
 local storage = core.get_mod_storage()
 local rules = {}
-local rules_text = storage:get_string("ttd_util_rules_text") or [[
+
+local default_rules = [[
 <center>┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓</center>
 <center>┃                 <style size=18><b>Welcome to the</b></style>                 ┃</center>
 <center>┃      <style size=18><b><style color=#ca0000>The Technical Difficulties!</style></b></style>      ┃</center>
@@ -8,6 +9,13 @@ local rules_text = storage:get_string("ttd_util_rules_text") or [[
 
 rules...
 ]]
+
+local rules_text = storage:get_string("ttd_util_rules_text")
+
+if rules_text == "" then
+      rules_text = default_rules
+      storage:set_string("ttd_util_rules_text", rules_text)
+end
 
 local no_interact_msg = "You must agree to the rules to gain the privilege"
       .. " 'interact'. Use /rules when you reconsider."
