@@ -5,17 +5,17 @@ local jail = {}
 local function get_spawn_pos()
       local ttd_util_api = _G.ttd_util or ttd_util
       if ttd_util_api and ttd_util_api.spawn and
-            type(ttd_util_api.spawn.get_pos) == "function" then
-                  return ttd_util_api.spawn.get_pos()
+         type(ttd_util_api.spawn.get_pos) == "function" then
+            return ttd_util_api.spawn.get_pos()
       end
       return nil
 end
 
 local function safe_show_rules(player)
       local ttd_util_api = _G.ttd_util or ttd_util
-      if ttd_util_api and ttd_util_api.rules and
-            type(ttd_util_api.rules.show_rules) == "function" then
-                  ttd_util_api.rules.show_rules(player)
+      if ttd_util_api and ttd_util_api.rules and type(
+            ttd_util_api.rules.show_rules) == "function" then
+            ttd_util_api.rules.show_rules(player)
       end
 end
 
@@ -176,22 +176,16 @@ function jail.jail_player(player, reason, by_ip, admin)
                                     -- Save privs
                                     local privs = core.get_player_privs(pname)
                                     local key = "jail_privs_" .. pname
-                                    storage:set_string(key,
-                                          core.serialize(privs))
+                                    storage:set_string(key, core.serialize(privs))
                                     -- Restrict privs
-                                    local jailed_privs = {
-                                          jailed = true,
-                                          shout  = true,
-                                    }
-                              core.set_player_privs(pname, jailed_privs)
-                              	-- Move to jail
-                              	local jail_pos = jail.get_pos()
-                              	if jail_pos then
-							player:set_pos(jail_pos)
-						end
-                              	-- Notify
-                              	core.chat_send_player(pname,
-							"You are jailed on this server.")
+                                    local jailed_privs = { jailed = true, shout = true }
+                                    core.set_player_privs(pname, jailed_privs)
+                                    -- Move to jail
+                                    local jail_pos = jail.get_pos()
+                                    if jail_pos then player:set_pos(jail_pos) end
+                                    -- Notify
+                                    core.chat_send_player(pname,
+                                          "You are jailed on this server.")
                         	end
                   	end
             	end
