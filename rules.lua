@@ -1,20 +1,18 @@
 local storage = core.get_mod_storage()
 local rules = {}
-local rules_text = storage:get_string("ttd_util_rules_text")
-
-local no_interact_msg = "You must agree to the rules to gain the privilege"
-      .. " 'interact'. Use /rules when you reconsider."
-
-local interact_msg = "Thank you for agreeing to the rules. You now have the privilege 'interact'."
-
---[[
+local rules_text = storage:get_string("ttd_util_rules_text") or [[
 <center>┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓</center>
 <center>┃                 <style size=18><b>Welcome to the</b></style>                 ┃</center>
 <center>┃      <style size=18><b><style color=#ca0000>The Technical Difficulties!</style></b></style>      ┃</center>
 <center>┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛</center>
 
 rules...
-]]--
+]]
+
+local no_interact_msg = "You must agree to the rules to gain the privilege"
+      .. " 'interact'. Use /rules when you reconsider."
+
+local interact_msg = "Thank you for agreeing to the rules. You now have the privilege 'interact'."
 
 local function set_rules_text(new_text)
       rules_text = new_text
