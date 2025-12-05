@@ -69,6 +69,7 @@ core.register_on_newplayer(function(player)
       if pos then
             player:set_pos(pos)
       else
+            player:respawn()
             core.log("warning", "[ttd_util.spawn] No spawn point set; 
                   .. "new player spawned at engine default.")
     end
