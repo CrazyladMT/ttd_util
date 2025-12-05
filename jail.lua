@@ -5,7 +5,7 @@ local jail = {}
 local function get_spawn_pos()
       local ttd_util_api = _G.ttd_util or ttd_util
       if ttd_util_api and ttd_util_api.spawn and
-         type(ttd_util_api.spawn.get_pos) == "function" then
+            type(ttd_util_api.spawn.get_pos) == "function" then
             return ttd_util_api.spawn.get_pos()
       end
       return nil
@@ -13,8 +13,8 @@ end
 
 local function safe_show_rules(player)
       local ttd_util_api = _G.ttd_util or ttd_util
-      if ttd_util_api and ttd_util_api.rules and type(
-            ttd_util_api.rules.show_rules) == "function" then
+      if ttd_util_api and ttd_util_api.rules and 
+            type(ttd_util_api.rules.show_rules) == "function" then
             ttd_util_api.rules.show_rules(player)
       end
 end
@@ -29,6 +29,7 @@ core.register_privilege("jailed", {
 -- File backend in world directory
 -- Format per line: kind|identifier|reason|admin|timestamp
 ---------------------------------------------------------------------
+
 local worldpath = core.get_worldpath()
 local jail_file = worldpath .. "/jailed.txt"
 
@@ -37,10 +38,9 @@ local function load_jail_entries()
       local f = io.open(jail_file, "r")
       if f then
             for line in f:lines() do
-                        local kind, ident, reason, admin, ts =
-                              line:match(
-                                    "^(%w+)|([^|]+)|([^|]*)|([^|]*)|?(%d*)$"
-                              )
+                  local kind, ident, reason, admin, ts = line:match(
+                        "^(%w+)|([^|]+)|([^|]*)|([^|]*)|?(%d*)$"
+                  )
                   if kind and ident and (kind == "name" or kind == "ip") then
                         entries[kind][ident] = {
                               reason =
@@ -59,17 +59,16 @@ end
 local function save_jail_entries(entries)
       local f = io.open(jail_file, "w")
       if not f then
-            local err_msg = "[ttd_util] Could not open jailed.txt for " ..
-                  "writing"
+            local err_msg = "[ttd_util] Could not open jailed.txt for writing"
             core.log("error", err_msg)
             return
       end
       for kind, map in pairs(entries) do
             for ident, data in pairs(map) do
-                  f:write(kind .. "|" .. ident .. "|" ..
-                        (data.reason or "No reason given") .. "|" ..
-                        (data.admin or "<unknown>") .. "|" ..
-                        tostring(data.time or 0) .. "\n")
+                  f:write(kind .. "|" .. ident .. "|"
+                        .. (data.reason or "No reason given") .. "|"
+                        .. (data.admin or "<unknown>") .. "|"
+                        .. tostring(data.time or 0) .. "\n")
             end
       end
       f:close()
@@ -81,10 +80,10 @@ local function normalize_ip(ip)
       return ip
 end
 
-
 ---------------------------------------------------------------------
 -- Public API
 ---------------------------------------------------------------------
+
 function jail.add(identifier, kind, reason, admin)
       local entries = load_jail_entries()
       entries[kind][identifier] = {
@@ -120,6 +119,7 @@ end
 ---------------------------------------------------------------------
 -- Jail position
 ---------------------------------------------------------------------
+
 function jail.set_pos(pos)
       storage:set_string("jail_pos", core.pos_to_string(pos))
 end
@@ -132,6 +132,7 @@ end
 ---------------------------------------------------------------------
 -- Jail / Unjail functions
 ---------------------------------------------------------------------
+
 function jail.jail_player(player, reason, by_ip, admin)
       local name, target
       if type(player) == "string" then
@@ -184,8 +185,7 @@ function jail.jail_player(player, reason, by_ip, admin)
                                     local jail_pos = jail.get_pos()
                                     if jail_pos then player:set_pos(jail_pos) end
                                     -- Notify
-                                    core.chat_send_player(pname,
-                                          "You are jailed on this server.")
+                                    core.chat_send_player(pname,"You are jailed on this server.")
                         	end
                   	end
             	end
@@ -205,7 +205,6 @@ function jail.jail_player(player, reason, by_ip, admin)
 
       return true, name .. " has been jailed."
 end
-
 
 function jail.unjail_player(name, by_ip, admin)
       if by_ip then
@@ -251,8 +250,7 @@ function jail.unjail_player(name, by_ip, admin)
                                     end
                               end)
 
-                              local chat_msg =
-                                    "You have been unjailed (IP release)."
+                              local chat_msg = "You have been unjailed (IP release)."
                               core.chat_send_player(pname, chat_msg)
                               count = count + 1
                         end
@@ -296,17 +294,16 @@ function jail.unjail_player(name, by_ip, admin)
             end
       end
 
-      local unjailed_msg = ("TTD_UTIL: %s was unjailed by %s " ..
-            "(by_ip=%s)")
-            :format(name, admin or "<unknown>", tostring(by_ip))
+      local unjailed_msg = ("TTD_UTIL: %s was unjailed by %s "
+            .. "(by_ip=%s)"):format(name, admin or "<unknown>", tostring(by_ip))
       core.log("action", unjailed_msg)
       return true, name .. " has been unjailed."
 end
 
-
 ---------------------------------------------------------------------
 -- Chat commands
 ---------------------------------------------------------------------
+
 core.register_chatcommand("set_jail_pos", {
       description = "Set the jail position to your current location",
       privs = { server = true },
@@ -321,8 +318,7 @@ core.register_chatcommand("set_jail_pos", {
 
 core.register_chatcommand("jail", {
       params = "[$name] <player> <reason>",
-      description = "Jail a player. Defaults to IP jail. " ..
-            "Use $name to jail by name.",
+      description = "Jail a player. Defaults to IP jail. Use $name to jail by name.",
       privs = { server = true },
       func = function(admin, param)
             if param == "" then
@@ -353,8 +349,7 @@ core.register_chatcommand("jail", {
 
 core.register_chatcommand("unjail", {
       params = "[$name] <player>",
-      description = "Release a player jailed by IP or name. " ..
-            "Defaults to IP jail.",
+      description = "Release a player jailed by IP or name. Defaults to IP jail.",
       privs = { server = true },
       func = function(admin, param)
             if param == "" then
@@ -380,7 +375,6 @@ core.register_chatcommand("unjail", {
             return jail.unjail_player(player, by_ip, admin)
       end
 })
-
 
 core.register_chatcommand("jail_status", {
 	params = "<player>",
@@ -428,7 +422,6 @@ core.register_chatcommand("jail_status", {
     	end
 })
 
-
 core.register_on_joinplayer(function(player)
       local name = player:get_player_name()
       if jail.is_jailed(name) then
@@ -438,6 +431,5 @@ core.register_on_joinplayer(function(player)
             core.chat_send_player(name, "You are jailed on this server.")
       end
 end)
-
 
 return jail
