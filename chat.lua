@@ -1,4 +1,3 @@
-local jail = ttd_util.jail
 local C    = core.colorize
 
 local chat = { admins = {} }
@@ -24,6 +23,8 @@ core.register_chatcommand("jailchat", {
 
 -- Intercept chat messages
 core.register_on_chat_message(function(name, message)
+      local jail = ttd_util.jail
+
       local jailed = jail.is_jailed(name)
       local mode   = chat.admins[name]
 
