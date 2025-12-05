@@ -230,7 +230,7 @@ core.register_on_player_receive_fields(function(player, formname, fields)
             -- refresh button: re‑open the formspec wih updated preview
             if fields.refresh_rules and fields.ttd_util_edit_rules_input then
                   core.show_formspec(name, "ttd_util_rules:set",
-                        get_setrules_formspec(fields.rules_input))
+                        get_setrules_formspec(fields.ttd_util_edit_rules_input))
                   return
             end
 
