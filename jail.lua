@@ -237,6 +237,8 @@ function jail.unjail_player(name, by_ip, admin)
                               local spawn_pos = get_spawn_pos()
                               if spawn_pos then
                                     player:set_pos(spawn_pos)
+                              else
+                                    player:respawn()
                               end
 
                               -- Show rules formspec (safe call)
