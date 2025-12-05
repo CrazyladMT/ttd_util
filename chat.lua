@@ -1,6 +1,8 @@
 local jail = ttd_util.jail
 local C    = core.colorize
 
+local test = "test
+
 local chat = { admins = {} }
 
 -- /jailchat command: lets admins join/leave the jail chat channel
