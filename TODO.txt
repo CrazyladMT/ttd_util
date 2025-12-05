@@ -1,0 +1,13 @@
+# TTD Util TODO
+
+## Clean up and unify chat messages across all files
+
+[ ] jailed players must be notifed when another player joins jailchat
+
+[ ] jailed players must be notified that they have been jailed (even though it's kinda obvious lol)
+
+[ ] check if a player is already jailed before sending "player has been jailed" again to the admin
+
+## things that just need to be fixed
+
+[ ] probably add alot more to this list --__--
