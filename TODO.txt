@@ -8,6 +8,10 @@
 
 [ ] check if a player is already jailed before sending "player has been jailed" again to the admin
 
+[ ] check if 'ranks' mod exists (https://github.com/octacian/ranks) and if so add compatability for it in jailchat
+
+[ ] completely redo jailchat messages
+
 ## things that just need to be fixed
 
 [ ] probably add alot more to this list --__--
