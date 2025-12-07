@@ -14,4 +14,8 @@
 
 ## things that just need to be fixed
 
+[ ] add some server settings for things?
+
+[ ] implement something where any player around a certain server-set radius has their nametag invisible?
+
 [ ] probably add alot more to this list --__--
