@@ -290,32 +290,35 @@ return function(ttd_util)
             end
       })
 
-      -- Unjail a player (IP by default, or by name with $name)
+      -- unjails a player, whether by name or IP
       core.register_chatcommand("unjail", {
-            params = "[$name] <player>",
-            description = "Release a player jailed by IP or name. Defaults to IP jail.",
+            params = "<player>",
+            description = "Release a player jailed by IP or name",
             privs = { server = true },
             func = function(admin, param)
                   if param == "" then
-                        return false, "Usage: /unjail [$name] <player>"
+                        return false, "Usage: /unjail <player>"
                   end
 
-                  local by_ip, player = true, nil
+                  local player = param
+                  local entries = load_jail_entries()
 
-                  local flag, p = param:match("^(%$name)%s+(%S+)$")
-                  if flag then
-                        by_ip = false
-                        player = p
-                  else
-                        player = param:match("^(%S+)$")
-                        by_ip = true
+                  -- Check name entry first
+                  local data = entries.name[player]
+                  if data then
+                        return jail.unjail_player(player, false, admin)
                   end
 
-                  if not player or player == "" then
-                        return false, "Usage: /unjail [$name] <player>"
+                  -- If no name entry, check IP entry
+                  local info = core.get_player_information(player)
+                  if info and info.address then
+                        local ip = normalize_ip(info.address)
+                        if entries.ip[ip] then
+                              return jail.unjail_player(player, true, admin)
+                        end
                   end
 
-                  return jail.unjail_player(player, by_ip, admin)
+                  return false, player .. " is not jailed."
             end
       })
 
